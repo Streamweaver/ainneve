@@ -26,7 +26,8 @@ __pycache__
 *.db3
 
 # Installation-specific
-#server/conf/settings.py
+.venv/*
+server/conf/settings.py
 server/logs/*.log.*
 web/static/*
 web/media/*

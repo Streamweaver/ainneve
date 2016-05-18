@@ -1,0 +1,2 @@
+enum34
+git+https://github.com/evennia/evennia.git#egg=evennia
