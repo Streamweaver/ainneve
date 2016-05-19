@@ -46,123 +46,219 @@ class SkillException(Exception):
 
 # global skill data is minimal, and can just be stored in a dict for now
 _SKILL_DATA = {
-    # STR
-    'escape': {
-        'name': 'Escape',
-        'base': 'STR',
-        'desc': ("|mEscape|n represents a character's ability to free "
-                 "themselves from restraints such as cuffs or shackles. It "
-                 "also entails breaking free of prison or jail cells.")
+    # AGILITY SKILLS
+    "dodge": {
+        "name": "Dodge",
+        "base": "AGL",
+        "desc": "Skill at ducking and avoiding attacks."
     },
-    'climb': {
-        'name': 'Climb',
-        'base': 'STR',
-        'desc': ("|mClimb|n represents the proficiency in climbing difficult "
-                 "slopes or sheer walls.")
+    "rifles": {
+        "name": "Rifles",
+        "base": "AGL",
+        "desc": "Skill at shooting all kind of rifles."
     },
-    'jump': {
-        'name': 'Jump',
-        'base': 'STR',
-        'desc': ("|mJump|n is the ability to leap great distances such as "
-                 "across pits or over obstacles. Encumbrance may affect jump "
-                 "distance.")
+    "melee": {
+        "name": "Melee",
+        "base": "AGL",
+        "desc": "Skill with melee weapons"
     },
-    # PER
-    'lockpick': {
-        'name': 'Lock Pick',
-        'base': 'PER',
-        'desc': ("|mLock Pick|n represents the proficiency in manipulating "
-                 "pins and tumblers to open a lock without a key.")
+    "heavy weapons": {
+        "name": "Heavy Weapons",
+        "base": "AGL",
+        "desc": "Skill at using missile launchers and crewed weapons."
     },
-    'listen': {
-        'name': 'Listen',
-        'base': 'PER',
-        'desc': ("|mListen|n is the ability to hear distant or quiet noises. "
-                 "Characters may listen intently near closed doors or long "
-                 "hallways for approaching enemies or other hushed "
-                 "activities.")
+    "sleight of hand": {
+        "name": "Sleight of Hand",
+        "base": "AGL",
+        "desc": "Skill at picking pockets and physical misdirection."
     },
-    'sense': {
-        'name': 'Sense Danger',
-        'base': 'PER',
-        'desc': ("|mSense Danger|n is the ability to assess the level of "
-                 "danger that enemies and situations possess.")
+    "throwing": {
+        "name": "Throwing",
+        "base": "AGL",
+        "desc": "Skill at throwing weapons and grenades."
     },
-    # INT
-    'appraise': {
-        'name': 'Appraise',
-        'base': 'INT',
-        'desc': ("|mAppraise|n is the ability to determine an accurate value "
-                 "of an item's worth and abilities.")
+    # STRENGTH
+    "armor": {
+        "name": "Armor",
+        "base": "STR",
+        "desc": "Skill at wearing non-powered armors."
     },
-    'medicine': {
-        'name': 'Medicine',
-        'base': 'INT',
-        'desc': ("|mMedicine|n is the practice of healing and nurturing. A "
-                 "character who practices medicine can remove heal damage or "
-                 "adverse conditions, or cure certain poisons. ")
+    "brawling": {
+        "name": "Brawling",
+        "base": "STR",
+        "desc": "Skill in hand to hand combat."
     },
-    'survival': {
-        'name': 'Survival',
-        'base': 'INT',
-        'desc': ("|mSurvival|n is the ability to procure shelter, fire, food "
-                 "and drink in an otherwise inhospitable or untamed location.")
+    # KNWLEGE SKILLS
+    "astrography": {
+        "name": "Astrography",
+        "base": "KNW",
+        "desc": "Skill in stellar mapping and plotting jumps."
     },
-    # DEX
-    'balance': {
-        'name': 'Balance',
-        'base': 'DEX',
-        'desc': ("|mBalance|n is the ability to stay centered and not fall from "
-                 "a narrow ledge or walkway. It is a character's ability to "
-                 "keep their equilibrium even on unsteady terrain.")
+    "bureaucracy": {
+        "name": "Bureaucracy",
+        "base": "KNW",
+        "desc": "Skill in manipulating or examining records, official requests."
     },
-    'sneak': {
-        'name': 'Sneak',
-        'base': 'DEX',
-        'desc': ("|mSneak|n is the skill of remaining unseen and unheard by "
-                 "enemies while moving stealthily.")
+    "business": {
+        "name": "Business",
+        "base": "KNW",
+        "desc": "Skill at trading, negotiating business deals and finding profit."
     },
-    'throwing': {
-        'name': 'Throwing',
-        'base': 'DEX',
-        'desc': ("|mThrowing|n is the act of tossing an [Item], object or "
-                 "weapon.")
+    "cultures": {
+        "name": "Cultures",
+        "base": "KNW",
+        "desc": "Understanding of cultures and diplomacy to avoid conflict."
     },
-    # CHA
-    'animal': {
-        'name': 'Animal Handle',
-        'base': 'CHA',
-        'desc': ("|mAnimal Handle)|n is the innate feat of being able to calm "
-                 "and communicate non-verbally with a creature of less-than "
-                 "humanoid intelligence. The target number to succeed is equal "
-                 "to 10 - intelligence of the animal.")
+    "intimidation": {
+        "name": "Intimidation",
+        "base": "KNW",
+        "desc": "Skill at getting others to back down or force them to obey."
     },
-    'barter': {
-        'name': 'Barter',
-        'base': 'CHA',
-        'desc': ("|mBarter|n is the the timeless art of negotiation in an "
-                 "effort to lower the price on an item for sale. This ability "
-                 "can only be done once per merchant per day.")
+    "languages": {
+        "name": "Languages",
+        "base": "KNW",
+        "desc": "Skill at understanding and deciphering languages"
     },
-    'leadership': {
-        'name': 'Leadership',
-        'base': 'CHA',
-        'desc': ("|mLeadership|n is the natural ability to raise the spirits "
-                 "and morale of those around you. It also enhances grouping.")
+    "scholar": {
+        "name": "Scholar",
+        "base": "KNW",
+        "desc": "Skill at examining artifacts or scientific samples."
     },
+    "streetwise": {
+        "name": "Streetwise",
+        "base": "KNW",
+        "desc": "Skill at underworld negotiations, uncovering rumors and finding the black market."
+    },
+    "survival": {
+        "name": "Survival",
+        "base": "KNW",
+        "desc": "Skill at enduring and avoiding damage in hostile environments."
+    },
+    # MCHANICAL SKILLS
+    "powered armor": {
+        "name": "Powered Armor",
+        "base": "MCH",
+        "desc": "Skill at operating powered armor and exoskeletons."
+    },
+    "gunnery": {
+        "name": "Gunnery",
+        "base": "MCH",
+        "desc": "Skill operating vehicle mounted weapons."
+    },
+    "navigation": {
+        "name": "Navigation",
+        "base": "MCH",
+        "desc": "Skill at plotting courses."
+    },
+    "piloting": {
+        "name":  "piloting",
+        "base": "MCH",
+        "desc": "Skill at operating starships and atmospheric vehicles."
+    },
+    "sensors":  {
+        "name": "Sensors",
+        "base": "MCH",
+        "desc":  "Skill operating starship or vehicle sensors and cloaks."
+    },
+    "shields": {
+        "name": "Shields",
+        "base": "MCH",
+        "desc": "Skill at operating shields."
+    },
+    # PERCEPTION SKILLS
+    "bargain": {
+        "name": "Bargain",
+        "base": "PER",
+        "desc": "Skill at negotiting prices when buying and selling."
+    },
+    "gambling": {
+        "name": "Gambling",
+        "base": "PER",
+        "desc": "Skill at games of chance and high stakes games."
+    },
+    "stealth": {
+        "name": "Stealth",
+        "base": "PER",
+        "desc": "Skill at hiding or moving while remaining undetected."
+    },
+    "investigation": {
+        "name":  "Investigation",
+        "base": "PER",
+        "desc": "Skill at examining evidence to gain bonuses or information."
+    },
+    "persuasion": {
+        "name": "Persuasion",
+        "base": "PER",
+        "desc": "Skill at convincing others."
+    },
+    "search": {
+        "name": "Search",
+        "base": "PER",
+        "desc": "Skill at examining areas for hidden items."
+    },
+    # TCHNICAL SKILLS
+    "armorer": {
+        "name": "Armorer",
+        "base": "TCH",
+        "desc": "Skill at repairing, improving or salvaging armor."
+    },
+    "computers": {
+        "name": "Computers",
+        "base": "TCH",
+        "desc": "Skill at operating, and hacking computers."
+    },
+    "demolitions": {
+        "name": "Demolitions",
+        "base": "TCH",
+        "desc": "Skill setting or disarming explosives."
+    },
+    "power armor tech": {
+        "name": "Power Armor tech",
+        "base": "TCH",
+        "desc": "Skill at repairing, improving or salvaging power armor."
+    },
+    "gunsmith": {
+        "name": "gunsmith",
+        "base": "TCH",
+        "desc": "Skill at repairing, improving or salvaging firearms."
+    },
+    "starship engineering": {
+        "name": "Starship Engineering",
+        "base": "TCH",
+        "desc": "Skill at repairing, improving or salvaging starships."
+    },
+    "gunnary tech": {
+        "name": "Gunnary tech",
+        "base": "TCH",
+        "desc": "Skill at repairing, improving or salvaging vehicle mounted weapons."
+    },
+    "medicine": {
+        "name": "Medicine",
+        "base": "TCH",
+        "desc": "Skill at healing and operating medical devices and scanners."
+    },
+    "robotics": {
+        "name": "Robotics",
+        "base": "TCH",
+        "desc": "Skill at repairing, improving or salvaing robotics and cybernetics. "
+    },
+    "security": {
+        "name": "Security",
+        "base": "TCH",
+        "desc": "Skill at breaching security systems and locks."
+    }
 }
 
 # skill groupings used in skills command
-ALL_SKILLS = ('escape', 'climb', 'jump',
-              'lockpick', 'listen', 'sense',
-              'appraise', 'medicine', 'survival',
-              'balance', 'sneak', 'throwing',
-              'animal', 'barter', 'leadership')
+ALL_SKILLS = tuple(sorted([name for name in _SKILL_DATA.keys()]))
+
 STR_SKILLS = [s for s in ALL_SKILLS if _SKILL_DATA[s]['base'] == 'STR']
+AGL_SKILLS = [s for s in ALL_SKILLS if _SKILL_DATA[s]['base'] == 'AGL']
+KNW_SKILLS = [s for s in ALL_SKILLS if _SKILL_DATA[s]['base'] == 'KNW']
+MCH_SKILLS = [s for s in ALL_SKILLS if _SKILL_DATA[s]['base'] == 'MCH']
 PER_SKILLS = [s for s in ALL_SKILLS if _SKILL_DATA[s]['base'] == 'PER']
-INT_SKILLS = [s for s in ALL_SKILLS if _SKILL_DATA[s]['base'] == 'INT']
-DEX_SKILLS = [s for s in ALL_SKILLS if _SKILL_DATA[s]['base'] == 'DEX']
-CHA_SKILLS = [s for s in ALL_SKILLS if _SKILL_DATA[s]['base'] == 'CHA']
+TCH_SKILLS = [s for s in ALL_SKILLS if _SKILL_DATA[s]['base'] == 'TCH']
+
 
 def apply_skills(char):
     """Sets up a character's initial skill traits.

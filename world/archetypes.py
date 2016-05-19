@@ -55,20 +55,41 @@ class ArchetypeException(Exception):
     def __init__(self, msg):
         self.msg = msg
 
-BASE_ARCHETYPES = ('Arcanist', 'Scout', 'Warrior')
-DUAL_ARCHETYPES = ('Warrior-Scout', 'Warrior-Arcanist', 'Arcanist-Scout')
-VALID_ARCHETYPES = BASE_ARCHETYPES + DUAL_ARCHETYPES
+ARCHETYPE_DATA = {
+    'soldier': {
+        'name': 'Soldier',
+        'AGL': 12, 'STR': 12, 'KNW': 7, 'MCH': 8, 'PER': 8, 'TCH': 7,
+        'desc': fill(
+            "|cSoldiers|n are highly skilled in many forms of combat.  They can "
+            "be military veterans, mercinaries, security forces or anyone with "
+            "professional military experience. "
+        )
+    },
+    'scout': {
+        'name': 'Scout',
+        'AGL': 8, 'STR': 7, 'KNW': 11, 'MCH': 11, 'PER': 8, 'TCH': 9,
+        'desc': "|cScouts|n are explorers, independent pilots and all around survivalists."
+    },
+    'scoundrel': {
+        'name': 'Scoundrels',
+        'AGL': 11, 'STR': 6, 'KNW': 9, 'MCH': 9, 'PER': 13, 'TCH': 6,
+        'desc': "|cScoundrels|n are con-men, gamblers, crime lords and fixers."
+    }
+}
 
-PRIMARY_TRAITS = ('STR', 'PER', 'INT', 'DEX', 'CHA', 'VIT', 'MAG')
-SECONDARY_TRAITS = ('HP', 'SP', 'BM', 'WM')
-SAVE_ROLLS = ('FORT', 'REFL', 'WILL')
-COMBAT_TRAITS = ('ATKM', 'ATKR', 'ATKU', 'DEF', 'PP')
-OTHER_TRAITS = ('LV', 'XP', 'ENC', 'MV', 'ACT')
+BASE_ARCHETYPES = (k for k in ARCHETYPE_DATA)
+# DUAL_ARCHETYPES = ('Warrior-Scout', 'Warrior-Arcanist', 'Arcanist-Scout') # TODO remove
+VALID_ARCHETYPES = BASE_ARCHETYPES # keeping seperate for future expansion
 
-ALL_TRAITS = (PRIMARY_TRAITS + SECONDARY_TRAITS +
-              SAVE_ROLLS + COMBAT_TRAITS + OTHER_TRAITS)
+PRIMARY_TRAITS = ('AGL', 'STR', 'KNW', 'MCH', 'PER','TCH')
+SECONDARY_TRAITS = ('WOUNDS', 'FATE')
+PSIONIC_TRAITS = ('MP',) # Save for later
+# COMBAT_TRAITS = ('ATKM', 'ATKR', 'ATKU', 'DEF', 'PP')
+OTHER_TRAITS = ('CP', 'ENC')
 
-TOTAL_PRIMARY_POINTS = 30
+ALL_TRAITS = (PRIMARY_TRAITS + SECONDARY_TRAITS + OTHER_TRAITS) # ADD psionics later
+
+TOTAL_PRIMARY_POINTS = 54
 
 def apply_archetype(char, name, reset=False):
     """Set a character's archetype and initialize traits.
@@ -84,18 +105,14 @@ def apply_archetype(char, name, reset=False):
         reset (bool): if True, remove any current archetype and apply the
             named archetype as new.
     """
-    name = name.title()
+    name = name.lower()
     if name not in VALID_ARCHETYPES:
         raise ArchetypeException('Invalid archetype.')
 
-    if char.db.archetype is not None:
-        if not reset:
-            if char.db.archetype == name:
-                raise ArchetypeException('Character is already a {}'.format(name))
-
-            name = '-'.join((char.db.archetype, name))
-            reset = True
-
+    if char.db.archetype is not None and not reset:
+        raise ArchetypeException('Character is already a {}'.format(name))
+    if name not in ARCHETYPE_DATA:
+        raise AttributeError("No archetype defined for %s." % name)
     archetype = load_archetype(name)
     char.db.archetype = archetype.name
     if reset:
@@ -145,25 +162,7 @@ def calculate_secondary_traits(traits):
         populated.
     """
     # secondary traits
-    traits.HP.base = traits.VIT.actual
-    traits.SP.base = traits.VIT.actual
-    # save rolls
-    traits.FORT.base = traits.VIT.actual
-    traits.REFL.base = traits.DEX.actual
-    traits.WILL.base = traits.INT.actual
-    # combat
-    traits.ATKM.base = traits.STR.actual
-    traits.ATKR.base = traits.PER.actual
-    traits.ATKU.base = traits.DEX.actual
-    traits.DEF.base = traits.DEX.actual
-    # mana
-    traits.BM.max = 10 if traits.MAG.actual > 0 else 0
-    traits.WM.max = 10 if traits.MAG.actual > 0 else 0
-    # misc
-    traits.STR.carry_factor = 10
-    traits.STR.lift_factor = 20
-    traits.STR.push_factor = 40
-    traits.ENC.max = traits.STR.lift_factor * traits.STR.actual
+    pass # we don't do this in this implementation.
 
 
 def finalize_traits(traits):
@@ -174,14 +173,9 @@ def finalize_traits(traits):
     applies any `mod` values to the traits' `base`, then resets
     the `mod` property.
     """
-    for t in PRIMARY_TRAITS + SECONDARY_TRAITS + SAVE_ROLLS:
-        traits[t].base = traits[t].actual if traits[t].actual <= 10 else 10
+    for t in PRIMARY_TRAITS + SECONDARY_TRAITS:
+        traits[t].base = traits[t].actual if traits[t].actual >= 1 else 1 # min 1D on anything.
         traits[t].reset_mod()
-
-    if traits.BM.base == 0:
-        traits.BM.max = 0
-    if traits.WM.base == 0:
-        traits.WM.max = 0
 
 
 def load_archetype(name):
@@ -193,50 +187,49 @@ def load_archetype(name):
     Return:
         (Archetype): An instance of the requested archetype class.
     """
-    name = name.title()
-    if '-' in name:  # dual arch
-        archetype = _make_dual(*[load_archetype(n) for
-                                 n in name.split('-', 1)])
-    else:
-        try:
-            archetype = globals().get(name, None)()
-        except TypeError:
-            raise ArchetypeException("Invalid archetype specified.")
+    name = name.lower()
+    try:
+        data = ARCHETYPE_DATA[name].copy()
+        archetype = Archetype(data)
+    except KeyError:
+        raise ArchetypeException("No data found for '%s'" % name)
+
     return archetype
 
-def _make_dual(a, b):
-    """Creates a dual archetype class out of two basic `Archetype` classes.
-
-    Args:
-        a (Archetype): first component Archetype
-        b (Archetype): second component Archetype
-
-    Returns:
-        (Archetype): dual Archetype class
-    """
-    if '-' in a.name or '-' in b.name:
-        raise ArchetypeException('Cannot create Triple-Archetype')
-    if a.name == b.name:
-        raise ArchetypeException('Cannot create dual of the same Archetype')
-
-    names = {
-        frozenset(['Warrior', 'Scout']): 'Warrior-Scout',
-        frozenset(['Warrior', 'Arcanist']): 'Warrior-Arcanist',
-        frozenset(['Scout', 'Arcanist']): 'Arcanist-Scout'
-    }
-    dual = Archetype()
-    for key, trait in dual.traits.iteritems():
-        trait['base'] = (a.traits.get(key, trait)['base'] +
-                         b.traits.get(key, trait)['base']) // 2
-        trait['mod'] = (a.traits.get(key, trait)['mod'] +
-                        b.traits.get(key, trait)['mod']) // 2
-    dual.health_roll = min(a.health_roll, b.health_roll, key=roll_max)
-    dual.name = names[frozenset([a.name, b.name])]
-    desc = "|c{}s|n have a blend of the qualities of both component archetypes.\n\n"
-    desc += a._desc + '\n\n' + b._desc
-    dual.desc = desc.format(dual.name)
-    dual.__class__.__name__ = dual.name.replace('-', '')
-    return dual
+# TODO remove
+# def _make_dual(a, b):
+#     """Creates a dual archetype class out of two basic `Archetype` classes.
+#
+#     Args:
+#         a (Archetype): first component Archetype
+#         b (Archetype): second component Archetype
+#
+#     Returns:
+#         (Archetype): dual Archetype class
+#     """
+#     if '-' in a.name or '-' in b.name:
+#         raise ArchetypeException('Cannot create Triple-Archetype')
+#     if a.name == b.name:
+#         raise ArchetypeException('Cannot create dual of the same Archetype')
+#
+#     names = {
+#         frozenset(['Warrior', 'Scout']): 'Warrior-Scout',
+#         frozenset(['Warrior', 'Arcanist']): 'Warrior-Arcanist',
+#         frozenset(['Scout', 'Arcanist']): 'Arcanist-Scout'
+#     }
+#     dual = Archetype()
+#     for key, trait in dual.traits.iteritems():
+#         trait['base'] = (a.traits.get(key, trait)['base'] +
+#                          b.traits.get(key, trait)['base']) // 2
+#         trait['mod'] = (a.traits.get(key, trait)['mod'] +
+#                         b.traits.get(key, trait)['mod']) // 2
+#     dual.health_roll = min(a.health_roll, b.health_roll, key=roll_max)
+#     dual.name = names[frozenset([a.name, b.name])]
+#     desc = "|c{}s|n have a blend of the qualities of both component archetypes.\n\n"
+#     desc += a._desc + '\n\n' + b._desc
+#     dual.desc = desc.format(dual.name)
+#     dual.__class__.__name__ = dual.name.replace('-', '')
+#     return dual
 
 
 # Archetype Classes
@@ -244,45 +237,27 @@ def _make_dual(a, b):
 
 class Archetype(object):
     """Base archetype class containing default values for all traits."""
-    def __init__(self):
-        self.name = None
-        self._desc = None
-
-        # base traits data
-        self.traits = {
-            # primary
-            'STR': {'type': 'static', 'base': 1, 'mod': 0, 'name': 'Strength'},
-            'PER': {'type': 'static', 'base': 1, 'mod': 0, 'name': 'Perception'},
-            'INT': {'type': 'static', 'base': 1, 'mod': 0, 'name': 'Intelligence'},
-            'DEX': {'type': 'static', 'base': 1, 'mod': 0, 'name': 'Dexterity'},
-            'CHA': {'type': 'static', 'base': 1, 'mod': 0, 'name': 'Charisma'},
-            'VIT': {'type': 'static', 'base': 1, 'mod': 0, 'name': 'Vitality'},
-            # magic
-            'MAG': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Magic'},
-            'BM': {'type': 'gauge', 'base': 0, 'mod': 0, 'min': 0, 'max': 10, 'name': 'Black Mana'},
-            'WM': {'type': 'gauge', 'base': 0, 'mod': 0, 'min': 0, 'max': 10, 'name': 'White Mana'},
-            # secondary
-            'HP': {'type': 'gauge', 'base': 0, 'mod': 0, 'name': 'Health'},
-            'SP': {'type': 'gauge', 'base': 0, 'mod': 0, 'name': 'Stamina'},
-            # saves
-            'FORT': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Fortitude Save'},
-            'REFL': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Reflex Save'},
-            'WILL': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Will Save'},
-            # combat
-            'ATKM': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Melee Attack'},
-            'ATKR': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Ranged Attack'},
-            'ATKU': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Unarmed Attack'},
-            'DEF': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Defense'},
-            'ACT': {'type': 'counter', 'base': 0, 'mod': 0, 'min': 0, 'name': 'Action Points'},
-            'PP': {'type': 'counter', 'base': 0, 'mod': 0, 'min': 0, 'name': 'Power Points'},
-            # misc
-            'ENC': {'type': 'counter', 'base': 0, 'mod': 0, 'min': 0, 'name': 'Carry Weight'},
-            'MV': {'type': 'gauge', 'base': 6, 'mod': 0, 'min': 0, 'name': 'Movement Points'},
-            'LV': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Level'},
-            'XP': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Experience',
-                   'extra': {'level_boundaries': (500, 2000, 4500, 'unlimited')}},
-        }
-        self.health_roll = None
+    def __init__(self, data):
+        try:
+            self.name = data['name']
+            self._desc = data['desc']
+            self.traits = {
+                # primary
+                'AGL': {'type': 'static', 'base': data['AGL'], 'mod': 0, 'name': 'Agility'},
+                'STR': {'type': 'static', 'base': data['STR'], 'mod': 0, 'name': 'Strength'},
+                'KNW': {'type': 'static', 'base': data['KNW'], 'mod': 0, 'name': 'Knowledge'},
+                'TCH': {'type': 'static', 'base': data['TCH'], 'mod': 0, 'name': 'Technical'},
+                'PER': {'type': 'static', 'base': data['PER'], 'mod': 0, 'name': 'Perception'},
+                'MCH': {'type': 'static', 'base': data['MCH'], 'mod': 0, 'name': 'Mechanical'},
+                # secondary
+                'WOUNDS': {'type': 'static', 'base': 0, 'mod': 0, 'min': 0, 'max': 6, 'name': 'Wounds'},
+                'FATE': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Fate'},
+                # misc
+                'ENC': {'type': 'counter', 'base': 0, 'mod': 0, 'min': 0, 'name': 'Carry Weight'},
+                'CP': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Character Points'},
+            }
+        except KeyError:
+            raise ArchetypeException("Archetype data invalid.")
 
     @property
     def ldesc(self):
@@ -293,12 +268,6 @@ class Archetype(object):
         desc += '\n\n'
         desc += "|c{archetype}s|n start with the following base primary traits:"
         desc += "\n{traits}\n"
-        desc += "  Base |CMovement Points|n:    |w{mv:>2d}|n\n"
-        desc += "  |CStamina|n Modifier:        |w{sp_mod:+>2d}|n\n"
-        desc += "  |CPower Points|n Modifier:   |w{pp_mod:+>2d}|n\n"
-        desc += "  |CReflex Save|n Modifier:    |w{refl_mod:+>2d}|n\n"
-        desc += ("  When leveling up, |c{archetype}s|n gain "
-                 "|w{health_roll}|C HP|n.\n")
 
         data = []
         for i in xrange(3):
@@ -307,12 +276,7 @@ class Archetype(object):
         traits = EvTable(header=False, table=data)
 
         return desc.format(archetype=self.name,
-                           traits=traits,
-                           health_roll=self.health_roll,
-                           mv=self.traits['MV']['base'],
-                           sp_mod=self.traits['SP']['mod'],
-                           pp_mod=self.traits['PP']['base'],
-                           refl_mod=self.traits['REFL']['mod'])
+                           traits=traits)
 
     @property
     def desc(self):
@@ -327,71 +291,3 @@ class Archetype(object):
         """Return a trait : value pair formatted for 3col layout"""
         return "|C{:<16.16}|n : |w{:>3}|n".format(
                     trait['name'], trait['base'])
-
-
-class Arcanist(Archetype):
-    """Represents the Arcanist archetype."""
-    def __init__(self):
-        super(Arcanist, self).__init__()
-        self.name = 'Arcanist'
-        self.desc = fill(
-            "|cArcanists|n harness mysterious, arcane powers they pull from "
-            "the ether. These magic and paranormal wielders employ occult "
-            "powers that only they truly understand."
-        )
-
-        # set starting trait values
-        self.traits['PER']['base'] = 4
-        self.traits['INT']['base'] = 6
-        self.traits['CHA']['base'] = 4
-        self.traits['MAG']['base'] = 6
-        self.traits['SP']['mod'] = -2
-        self.traits['MV']['base'] = 7
-
-        self.health_roll = '1d6-1'
-
-
-class Scout(Archetype):
-    """Represents the Scout archetype."""
-    def __init__(self):
-        super(Scout, self).__init__()
-        self.name = 'Scout'
-        self.desc = fill(
-            "|cScouts|n are highly intelligent and well-trained individuals "
-            "who prefer to work their secret craft in the shadows where "
-            "they remain unseen. Scouts go by many names such as thieves, "
-            "rogues and rangers but little is known by general society of "
-            "their closely guarded secrets. "
-        )
-
-        # set starting trait values
-        self.traits['STR']['base'] = 4
-        self.traits['PER']['base'] = 6
-        self.traits['INT']['base'] = 6
-        self.traits['DEX']['base'] = 4
-
-        self.health_roll = '1d6'
-
-
-class Warrior(Archetype):
-    """Represents the Warrior archetype."""
-    def __init__(self):
-        super(Warrior, self).__init__()
-        self.name = 'Warrior'
-        self.desc = fill(
-            "|cWarriors|n are individual soldiers, mercenaries, bounty "
-            "hunters or various types of combatants. They believe no "
-            "problem can't be solved with their melee weapon and choose "
-            "strength as their highest primary trait."
-        )
-
-        # set starting trait values
-        self.traits['STR']['base'] = 6
-        self.traits['DEX']['base'] = 4
-        self.traits['CHA']['base'] = 4
-        self.traits['VIT']['base'] = 6
-        self.traits['REFL']['mod'] = -2
-        self.traits['PP']['base'] = 2
-        self.traits['MV']['base'] = 5
-
-        self.health_roll = '1d6+1'
