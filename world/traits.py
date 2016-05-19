@@ -216,6 +216,7 @@ Example:
 
 from evennia.utils.dbserialize import _SaverDict
 from evennia.utils import logger, lazy_property
+from evennia.contrib.dice import roll_dice
 from functools import total_ordering
 
 TRAIT_TYPES = ('static', 'counter', 'gauge')
@@ -693,6 +694,29 @@ class Trait(object):
         # if we get to this point, it's either a static trait or
         # a divide by zero situation
         return "100.0%"
+
+    @property
+    def d6(self):
+        """Formats the D6 notation of the trait.
+
+        Returns:
+            (string): D6 notation of value.
+        """
+        pass # TODO Implement as format
+
+    @property
+    def roll(self):
+        """Returns the results of a roll of the actual trait value.
+
+        Returns:
+            (int): Result of role using trait.actual
+        """
+        if self.actual < 3:
+            return 0 # Stat below min and can't be rolled
+        d = self.actual / 3
+        p = self.actual % 3
+        rslt = roll_dice(d, 6) if p == 0 else roll_dice(d, 6, ('+', p))
+        return rslt
 
     # Private members
 

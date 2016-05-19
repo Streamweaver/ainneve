@@ -77,10 +77,6 @@ ARCHETYPE_DATA = {
     }
 }
 
-BASE_ARCHETYPES = (k for k in ARCHETYPE_DATA)
-# DUAL_ARCHETYPES = ('Warrior-Scout', 'Warrior-Arcanist', 'Arcanist-Scout') # TODO remove
-VALID_ARCHETYPES = BASE_ARCHETYPES # keeping seperate for future expansion
-
 PRIMARY_TRAITS = ('AGL', 'STR', 'KNW', 'MCH', 'PER','TCH')
 SECONDARY_TRAITS = ('WOUNDS', 'FATE')
 PSIONIC_TRAITS = ('MP',) # Save for later
@@ -105,8 +101,9 @@ def apply_archetype(char, name, reset=False):
         reset (bool): if True, remove any current archetype and apply the
             named archetype as new.
     """
+    # print("\n".join[name, "%s" % VALID_ARCHETYPES])
     name = name.lower()
-    if name not in VALID_ARCHETYPES:
+    if name not in ARCHETYPE_DATA:
         raise ArchetypeException('Invalid archetype.')
 
     if char.db.archetype is not None and not reset:
@@ -162,7 +159,7 @@ def calculate_secondary_traits(traits):
         populated.
     """
     # secondary traits
-    pass # we don't do this in this implementation.
+    pass # we don't do this in this implementation. May need if I move to bodypoints
 
 
 def finalize_traits(traits):
@@ -195,42 +192,6 @@ def load_archetype(name):
         raise ArchetypeException("No data found for {}".format(name))
 
     return archetype
-
-# TODO remove
-# def _make_dual(a, b):
-#     """Creates a dual archetype class out of two basic `Archetype` classes.
-#
-#     Args:
-#         a (Archetype): first component Archetype
-#         b (Archetype): second component Archetype
-#
-#     Returns:
-#         (Archetype): dual Archetype class
-#     """
-#     if '-' in a.name or '-' in b.name:
-#         raise ArchetypeException('Cannot create Triple-Archetype')
-#     if a.name == b.name:
-#         raise ArchetypeException('Cannot create dual of the same Archetype')
-#
-#     names = {
-#         frozenset(['Warrior', 'Scout']): 'Warrior-Scout',
-#         frozenset(['Warrior', 'Arcanist']): 'Warrior-Arcanist',
-#         frozenset(['Scout', 'Arcanist']): 'Arcanist-Scout'
-#     }
-#     dual = Archetype()
-#     for key, trait in dual.traits.iteritems():
-#         trait['base'] = (a.traits.get(key, trait)['base'] +
-#                          b.traits.get(key, trait)['base']) // 2
-#         trait['mod'] = (a.traits.get(key, trait)['mod'] +
-#                         b.traits.get(key, trait)['mod']) // 2
-#     dual.health_roll = min(a.health_roll, b.health_roll, key=roll_max)
-#     dual.name = names[frozenset([a.name, b.name])]
-#     desc = "|c{}s|n have a blend of the qualities of both component archetypes.\n\n"
-#     desc += a._desc + '\n\n' + b._desc
-#     dual.desc = desc.format(dual.name)
-#     dual.__class__.__name__ = dual.name.replace('-', '')
-#     return dual
-
 
 # Archetype Classes
 

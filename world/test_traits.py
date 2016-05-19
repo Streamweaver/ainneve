@@ -2,6 +2,7 @@
 Unit test module for Trait classes.
 """
 
+from unittest import skip
 from django.test import TestCase
 from evennia.utils.test_resources import EvenniaTest
 from .traits import *
@@ -47,6 +48,21 @@ class TraitTestCase(TestCase):
         self.mod = 1
         self.trait.reset_mod()
         self.check_trait(8, 0, 8)
+
+    @skip("implement")
+    def test_d6(self):
+        pass
+
+    def test_trait_roll(self):
+        trait = Trait({
+            'type': 'static',
+            'name': 'Strength',
+            'base': 11, # 3d+2, range 5 - 20
+            'mod': 0,
+        })
+        for i in range(10000):
+            roll = trait.roll
+            self.assertTrue(5 <= roll <= 20, msg="Result %i out of range. %i %i" % (roll, trait.base, trait.actual))
 
 
 class TraitExtraPropsTestCase(TestCase):
