@@ -112,7 +112,7 @@ def apply_archetype(char, name, reset=False):
     if char.db.archetype is not None and not reset:
         raise ArchetypeException('Character is already a {}'.format(name))
     if name not in ARCHETYPE_DATA:
-        raise AttributeError("No archetype defined for %s." % name)
+        raise AttributeError("No archetype defined for {}".format(name))
     archetype = load_archetype(name)
     char.db.archetype = archetype.name
     if reset:
@@ -192,7 +192,7 @@ def load_archetype(name):
         data = ARCHETYPE_DATA[name].copy()
         archetype = Archetype(data)
     except KeyError:
-        raise ArchetypeException("No data found for '%s'" % name)
+        raise ArchetypeException("No data found for {}".format(name))
 
     return archetype
 
@@ -290,4 +290,4 @@ class Archetype(object):
     def _format_trait_3col(self, trait):
         """Return a trait : value pair formatted for 3col layout"""
         return "|C{:<16.16}|n : |w{:>3}|n".format(
-                    trait['name'], trait['base'])
+                    trait['name'], trait['base']) # TODO trait['base'] needs to be wrapped in a d6 formatter
