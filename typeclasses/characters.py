@@ -23,7 +23,7 @@ class Character(ContribRPCharacter):
     def at_object_creation(self):
         super(Character, self).at_object_creation()
         self.db.race = None
-        self.db.focus = None
+        self.db.size = None
         self.db.archetype = None
 
         self.db.wallet = {'GC': 0, 'SC': 0, 'CC': 0}
