@@ -9,7 +9,6 @@ This project is a fork of Ainneve, itself an Evennia implementation.
 
 This project is a playspace implementation of the D6 Space rules.
 
-
 # License
 
 Blind Singularity, Ainneve and Evennia uses the BSD license (https://github.com/evennia/evennia/wiki/Licensing).
