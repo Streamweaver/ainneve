@@ -43,16 +43,31 @@ def d6roll(value):
     else:
         return dice.roll_dice(d, 6, ('+', p))
 
-def skill_result(ch, skill):
+def skill_value(ch, skill):
     """
 
     Args:
-         ch (Character): Chracter object
-         skill (Trait):  String of skill to check.
+        ch (Character): Character object to read trait from.
+        skill (Trait): skill to calculate value for.
     """
+    try:
+        value = ch.traits[skill.trait].actual + skill.actual
+        return value
+    except KeyError:
+        return 0
+    except AttributeError:
+        return 0
 
-    value = ch.traits[skill.trait].acutal + skill.actual
-    return d6roll(value)
+
+def skill_result(ch, skill):
+    """
+    Returns a die roll result for a specific skill.
+
+    Args:
+         ch (Character): Chracter object
+         skill (Trait):  skill to check.
+    """
+    return d6roll(skill_value(ch, skill))
 
 def skill_check(ch, skill, target=5):
     """A basic Open Adventure Skill check.
@@ -60,10 +75,11 @@ def skill_check(ch, skill, target=5):
     This is used for skill checks, trait checks, save rolls, etc.
 
     Args:
+        ch (Character): the character object to use stats from.
         skill (Trait): the value of the skill to check
         target (int): the target number for the check to succeed
 
     Returns:
         (bool): indicates whether the check passed or failed
     """
-    return skill + std_roll() >= target
+    return skill_result(ch, skill) >= target

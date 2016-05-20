@@ -8,9 +8,9 @@ on a subset of Open Adventure rules.
 from evennia import spawn, TICKER_HANDLER as tickerhandler
 from evennia.utils import fill, dedent
 from evennia.utils.evtable import EvTable
+from evennia.contrib import dice
 
 from world import archetypes, races, skills
-from world.rulebook import d_roll
 from world.economy import format_credits as as_price
 from world.economy import transfer_funds, InsufficientFunds
 
@@ -326,7 +326,7 @@ def menunode_allocate_skills(caller, raw_string):
         output = "Final Skills:\n"
         output += "{skills}\n"
 
-        char.db.wallet['SC'] = d_roll('2d6+3')
+        char.db.wallet['SC'] = dice.roll(2, 3, ('+', 3))
         output += "You begin with |w{sc} SC|n (Silver Coins)."
 
         return menunode_equipment_cats(

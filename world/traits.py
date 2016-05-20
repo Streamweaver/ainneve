@@ -39,7 +39,8 @@ Example:
     * Gauge - Modified counter type modeling a refillable "gauge".
 
     All traits have a read-only `actual` property that will report the trait's
-    actual value.
+    actual value and should be used for most get operations as it includes any
+    modified values or calculations needed .
 
     Example:
 
@@ -211,6 +212,23 @@ Example:
             >>> hp.reset()                         # remove bonus on reduced trait
             >>> str(hp)                            # debuffs do not affect current
             'HP:            8 /   10 ( +0)'
+            ```
+
+    D6 Values
+
+        A Trait is desginated as a D6 trait by adding 'is_d6': True to the extra
+        property.  This is typically done at trait or skill creation.
+
+        Examples:
+            ```python
+            >>> strength = caller.traits.STR
+            >>> repr(strength)
+            Trait({'name': 'STR', 'type': 'static', 'base': 10, 'mod': 0,
+            'min': 0, 'max': 'base', 'current': 10, 'extra': {'is_d6': True}})
+            >>> strength.is_6d
+            True
+            >>> str(strength)
+            'Strength      3D+1'
             ```
 """
 
