@@ -1,15 +1,10 @@
 """
 Economy module.
 """
-from evennia.utils.dbserialize import _SaverDict
-
-import locale
 
 class InsufficientFunds(ValueError):
     """Represents an error in a financial transaction."""
     pass
-
-
 
 def transfer_funds(src, dst, credits):
     """Transfers a given value from src from dst.
