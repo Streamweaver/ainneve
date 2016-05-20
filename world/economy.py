@@ -38,7 +38,5 @@ def transfer_funds(src, dst, credits):
 
 def format_credits(credits):
     """Returns a string representing a value as numbers of coins."""
-    locale.setlocale(locale.LC_ALL, 'en_US')
-    locale.format("%d", credits, grouping=True)
-    output = "|w{}|n cr. ".format(locale.format("%d", credits, grouping=True))
+    output = "|w{:,}|n cr. ".format(credits)
     return output.strip()
