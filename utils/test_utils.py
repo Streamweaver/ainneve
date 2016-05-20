@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from .utils import d6str, d6roll
+from .utils import d6str
 
 class UtilityTestCase(TestCase):
     """
@@ -16,10 +16,3 @@ class UtilityTestCase(TestCase):
         for value, exp in data:
             self.assertEqual(d6str(value), exp)
 
-    def test_d6roll(self):
-        for value in range(3, 16):
-            for i in range(10000):
-                min = value / 3 + value % 3
-                max = value / 3 * 6 + value % 3
-                roll = d6roll(value)
-                self.assertTrue(min <= roll <= max, msg="{} is out or range for {}".format(roll, d6str(value)))

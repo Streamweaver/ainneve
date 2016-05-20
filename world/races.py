@@ -75,19 +75,15 @@ def apply_race(char, race):
 
 def _format_bonuses(bonuses):
     """Formats a dict of bonuses to base traits as a string."""
-    traits = bonuses.keys()
+    traits = bonuses.items()
     if len(bonuses) > 2:
         output = ", ".join(
-                    "{{w{:+1}{{n to {{C{}{{n".format(bonuses[t],
-                                                     _ARC.traits[t]['name'])
+                    "{{w{:+1}{{n to {{C{}{{n".format(t[1], t[0])
                     for t in traits[:-1])
-        output += ", and {{w{:+1}{{n to {{C{}{{n".format(
-                      bonuses[traits[-1]],
-                      _ARC.traits[traits[-1]]['name'])
+        output += ", and {{w{:+1}{{n to {{C{}{{n".format(traits[-1][1], traits[-1][0])
     else:
         output = " and ".join(
-                    "{{w{:+1}{{n to {{C{}{{n".format(bonuses[t],
-                                                     _ARC.traits[t]['name'])
+                    "{{w{:+1}{{n to {{C{}{{n".format(traits[1], traits[2])
                     for t in traits)
     return output
 

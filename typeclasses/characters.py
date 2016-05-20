@@ -26,7 +26,7 @@ class Character(ContribRPCharacter):
         self.db.size = None
         self.db.archetype = None
 
-        self.db.wallet = {'GC': 0, 'SC': 0, 'CC': 0}
+        self.db.credits = 0
 
         # Non-persistent attributes
         self.ndb.group = None

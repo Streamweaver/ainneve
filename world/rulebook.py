@@ -7,16 +7,13 @@ enforcing various game rules. See individual docstrings for more info.
 
 Roll / Check Functions
 
-    - `roll_max(xdyz)`
-    - `d_roll(xdyz)`
-    - `std_roll()`
-    - `skill_check(skill, target=5)`
+    - `d6roll(value)`
+    - `skill_check(ch, skill, target=5)`
+    - `skill_result(ch, skill)`
 
 """
 
-from random import randint
-import re
-
+from evennia.contrib import dice
 
 class DiceRollError(Exception):
     """Default error class in die rolls/skill checks.
@@ -27,85 +24,43 @@ class DiceRollError(Exception):
     def __init__(self, msg):
         self.msg = msg
 
-
-def _parse_roll(xdyz):
-    """Parser for XdY+Z dice roll notation.
+def d6roll(value):
+    """
+    Rolls the D6 rating for value and returns the results.
 
     Args:
-        xdyz (str): dice roll notation in the form of XdY[+|-Z][-DL]
+        value (int):  D6 value to roll.
 
-            - _X_ - the number of dice to roll
-            - _Y_ - the number of faces on each die
-            - _+/-Z_ - modifier to add to the total after dice are rolled
-            - _-DL_ - if the expression ends with literal L, sort the rolls
-                and drop the lowest _D_ rolls before returning the total.
-                _D_ can be omitted and will default to 1.
-
+    Returns:
+        (int) of the result of the #D6+# roll.
     """
-    xdyz_re = re.compile(r'(\d+)d(\d+)([+-]\d+(?!L))?(?:-(\d*L))?')
-    args = re.match(xdyz_re, xdyz)
-    if not args:
-        raise DiceRollError('Invalid die roll expression. Must be format `XdY[+-Z|-DL]`.')
+    if value < 3:
+        return 0
+    d = value / 3
+    p = value % 3
+    if p == 0:
+        return dice.roll_dice(d, 6)
+    else:
+        return dice.roll_dice(d, 6, ('+', p))
 
-    num, die, bonus, drop = args.groups()
-    num, die = int(num), int(die)
-    bonus = int(bonus or 0)
-    drop = int(drop[:-1] or 1) if drop else 0
-
-    if drop >= num:
-        raise DiceRollError('Rolls to drop must be less than number of rolls.')
-
-    return num, die, bonus, drop
-
-
-def roll_max(xdyz):
-    """Determines the maximum possible roll given an XdY+Z expression."""
-    num, die, bonus, drop = _parse_roll(xdyz)
-    return (num - drop) * die + bonus
-
-
-def d_roll(xdyz, total=True):
-    """Implementation of XdY+Z dice roll.
+def skill_result(ch, skill):
+    """
 
     Args:
-        xdyz (str): dice roll expression in the form of XdY[+Z] or XdY[-Z]
-        total (bool): if True, return a single value; if False, return a list
-            of individual die values
+         ch (Character): Chracter object
+         skill (Trait):  String of skill to check.
     """
-    num, die, bonus, drop = _parse_roll(xdyz)
-    if bonus > 0 and not total:
-        raise DiceRollError('Invalid arguments. `+-Z` not allowed when total is False.')
 
-    rolls = [randint(1, die) for _ in range(num)]
+    value = ch.traits[skill.trait].acutal + skill.actual
+    return d6roll(value)
 
-    if drop:
-        rolls = sorted(rolls, reverse=True)
-        [rolls.pop() for _ in range(drop)]
-    if total:
-        return sum(rolls) + bonus
-    else:
-        return rolls
-
-
-def std_roll():
-    """An Open Adventure "Standard Roll" as described in the OA rulebook.
-
-    Returns a number between -5 and +5, with 0 the most common result.
-    """
-    white, black = d_roll('2d6', total=False)
-    if white >= black:
-        return white - black
-    else:
-        return -(black - white)
-
-
-def skill_check(skill, target=5):
+def skill_check(ch, skill, target=5):
     """A basic Open Adventure Skill check.
 
     This is used for skill checks, trait checks, save rolls, etc.
 
     Args:
-        skill (int): the value of the skill to check
+        skill (Trait): the value of the skill to check
         target (int): the target number for the check to succeed
 
     Returns:

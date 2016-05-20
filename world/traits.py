@@ -214,10 +214,12 @@ Example:
             ```
 """
 
+from django.utils.encoding import python_2_unicode_compatible
 from evennia.utils.dbserialize import _SaverDict
 from evennia.utils import logger, lazy_property
-from evennia.contrib.dice import roll_dice
 from functools import total_ordering
+
+from utils.utils import d6str
 
 TRAIT_TYPES = ('static', 'counter', 'gauge')
 RANGE_TRAITS = ('counter', 'gauge')
@@ -231,7 +233,6 @@ class TraitException(Exception):
     """
     def __init__(self, msg):
         self.msg = msg
-
 
 class TraitHandler(object):
     """Factory class that instantiates Trait objects.
@@ -331,7 +332,7 @@ class TraitHandler(object):
         """Return a list of all trait keys in this TraitHandler."""
         return self.attr_dict.keys()
 
-
+@python_2_unicode_compatible
 @total_ordering
 class Trait(object):
     """Represents an object or Character trait.
@@ -378,26 +379,16 @@ class Trait(object):
 
     def __str__(self):
         """User-friendly string representation of this `Trait`"""
+        # TODO maybe change this 'd6' as type and add that type
+        if "is_d6" in self.extra and self.is_d6:
+            return "{:12} {}".format(self.name, d6str(self.actual))
         if self._type == 'gauge':
-            status = "{actual:4} / {base:4}".format(self.actual, self.base)
+            status = "{:4} / {:4}".format(self.actual, self.base)
         else:
-            status = "{actual:11}".format(self.actual)
+            status = "{:11}".format(self.actual)
 
-        return "{{name}::12} {status} ({mod:+3})".format(
-            ame=self.name,
-            status = status,
-            base=self._mod_base(),
-            mod=self.mod)
-
-    def __unicode__(self):
-        """User-friendly unicode representation of this `Trait`"""
-        if self._type == 'gauge':
-            status = "{actual:4} / {base:4}".format(self.actual, self.base)
-        else:
-            status = "{{actual:4}: <11}".format(self.actual)
-
-        return u"{{name}::12} {status} ({mod:+3})".format(
-            ame=self.name,
+        return "{name:12} {status} ({mod:+3})".format(
+            name=self.name,
             status = status,
             base=self._mod_base(),
             mod=self.mod)
@@ -694,29 +685,6 @@ class Trait(object):
         # if we get to this point, it's either a static trait or
         # a divide by zero situation
         return "100.0%"
-
-    @property
-    def d6(self):
-        """Formats the D6 notation of the trait.
-
-        Returns:
-            (string): D6 notation of value.
-        """
-        pass # TODO Implement as format
-
-    @property
-    def roll(self):
-        """Returns the results of a roll of the actual trait value.
-
-        Returns:
-            (int): Result of role using trait.actual
-        """
-        if self.actual < 3:
-            return 0 # Stat below min and can't be rolled
-        d = self.actual / 3
-        p = self.actual % 3
-        rslt = roll_dice(d, 6) if p == 0 else roll_dice(d, 6, ('+', p))
-        return rslt
 
     # Private members
 

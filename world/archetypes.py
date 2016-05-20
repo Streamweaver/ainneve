@@ -46,7 +46,7 @@ Module Functions:
         Returns an instance of the named Archetype class.
 """
 
-from world.rulebook import roll_max
+from collections import OrderedDict
 from evennia.utils import fill
 from evennia.utils.evtable import EvTable
 
@@ -95,9 +95,7 @@ def apply_archetype(char, name, reset=False):
 
     Args:
         char (Character): the character being initialized.
-        name (str): single archetype name to apply. If the character already
-            has a single archetype, it is combined with the existing as a
-            dual archetype.
+        name (str): archetype name to apply.
         reset (bool): if True, remove any current archetype and apply the
             named archetype as new.
     """
@@ -198,18 +196,18 @@ def load_archetype(name):
 
 class Archetype(object):
     """Base archetype class containing default values for all traits."""
-    def __init__(self, data):
+    def __init__(self, d):
         try:
-            self.name = data['name']
-            self._desc = data['desc']
+            self.name = d['name']
+            self._desc = d['desc']
             self.traits = {
                 # primary
-                'AGL': {'type': 'static', 'base': data['AGL'], 'mod': 0, 'name': 'Agility'},
-                'STR': {'type': 'static', 'base': data['STR'], 'mod': 0, 'name': 'Strength'},
-                'KNW': {'type': 'static', 'base': data['KNW'], 'mod': 0, 'name': 'Knowledge'},
-                'TCH': {'type': 'static', 'base': data['TCH'], 'mod': 0, 'name': 'Technical'},
-                'PER': {'type': 'static', 'base': data['PER'], 'mod': 0, 'name': 'Perception'},
-                'MCH': {'type': 'static', 'base': data['MCH'], 'mod': 0, 'name': 'Mechanical'},
+                'AGL': {'type': 'static', 'base': d['AGL'], 'mod': 0, 'name': 'Agility', 'extra': {'is_d6': True}},
+                'STR': {'type': 'static', 'base': d['STR'], 'mod': 0, 'name': 'Strength', 'extra': {'is_d6': True}},
+                'KNW': {'type': 'static', 'base': d['KNW'], 'mod': 0, 'name': 'Knowledge', 'extra': {'is_d6': True}},
+                'TCH': {'type': 'static', 'base': d['TCH'], 'mod': 0, 'name': 'Technical', 'extra': {'is_d6': True}},
+                'PER': {'type': 'static', 'base': d['PER'], 'mod': 0, 'name': 'Perception', 'extra': {'is_d6': True}},
+                'MCH': {'type': 'static', 'base': d['MCH'], 'mod': 0, 'name': 'Mechanical', 'extra': {'is_d6': True}},
                 # secondary
                 'WOUNDS': {'type': 'static', 'base': 0, 'mod': 0, 'min': 0, 'max': 6, 'name': 'Wounds'},
                 'FATE': {'type': 'static', 'base': 0, 'mod': 0, 'name': 'Fate'},

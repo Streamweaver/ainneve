@@ -49,21 +49,3 @@ def d6str(value):
     rslt = "{}D".format(d) if p < 1 else "{}D+{}".format(d, p)
     return rslt
 
-def d6roll(value):
-    """
-    Rolls the D6 rating for value and returns the results.
-
-    Args:
-        value (int):  D6 value to roll.
-
-    Returns:
-        (int) of the result of the #D6+# roll.
-    """
-    if value < 3:
-        return 0
-    d = value / 3
-    p = value % 3
-    if p == 0:
-        return dice.roll_dice(d, 6)
-    else:
-        return dice.roll_dice(d, 6, ('+', p))

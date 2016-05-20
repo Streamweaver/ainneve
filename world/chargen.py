@@ -11,7 +11,7 @@ from evennia.utils.evtable import EvTable
 
 from world import archetypes, races, skills
 from world.rulebook import d_roll
-from world.economy import format_coin as as_price
+from world.economy import format_credits as as_price
 from world.economy import transfer_funds, InsufficientFunds
 
 from math import ceil
@@ -65,6 +65,9 @@ _CATEGORY_LIST = sorted(_EQUIPMENT_CATEGORIES.iterkeys(),
 
 article_re = re.compile(r'^an?\s', re.IGNORECASE)
 
+def _archetypes():
+    ats = [k for k in archetypes.ARCHETYPE_DATA.keys()]
+    return sorted(ats)
 
 def menunode_welcome_archetypes(caller):
     """Starting page and Archetype listing."""
@@ -83,7 +86,7 @@ def menunode_welcome_archetypes(caller):
                 "have different strengths and weaknesses, which are reflected "
                 "in your character's starting traits.")
     options = []
-    for arch in archetypes.VALID_ARCHETYPES:
+    for arch in _archetypes():
         a = archetypes.load_archetype(arch)
         options.append({"desc": "|c{}|n".format(a.name),
                         "goto": "menunode_select_archetype"})
@@ -92,7 +95,7 @@ def menunode_welcome_archetypes(caller):
 
 def menunode_select_archetype(caller, raw_string):
     """Archetype detail and selection menu node."""
-    arch = archetypes.VALID_ARCHETYPES[int(raw_string.strip()) - 1]
+    arch = _archetypes()[int(raw_string.strip()) - 1]
     arch = archetypes.load_archetype(arch)
     text = arch.ldesc + "Would you like to become this archetype?"
     help = "Examine the properties of this archetype and decide whether\n"
@@ -200,32 +203,6 @@ def menunode_race_and_focuses(caller, raw_string):
                     "goto": "menunode_races"})
 
     return (text, help), options
-
-
-def menunode_select_race_focus(caller, raw_string):
-    """Focus detail and final race/focus selection menu node."""
-    char = caller.new_char
-    race = caller.ndb._menutree.race
-    focus = race.foci[int(raw_string.strip()) - 1]
-    text = "|wRace|n: |g{}|n\n|wFocus|n: ".format(race.name)
-    text += focus.desc
-    text += "Confirm this Race and Focus selection?"
-    help = "Examine the bonuses and detriments of this race and focus combination\n"
-    help += "and decide whether to apply them to your character."
-
-    options = ({"key": ("Yes", "ye", "y"),
-                "desc": "Become {} {} with the {} focus".format(
-                    'an' if race.name[0] == 'E' else 'a',
-                    race.name,
-                    focus.name),
-                "exec": lambda s: races.apply_race(char, race, focus),
-                "goto": "menunode_allocate_mana"},
-               {"key": ("No", "n", "_default"),
-                "desc": "Return to {} details".format(race.name),
-                "goto": "menunode_race_and_focuses"})
-
-    return (text, help), options
-
 
 def menunode_allocate_mana(caller, raw_string):
     """Mana point allocation menu node."""

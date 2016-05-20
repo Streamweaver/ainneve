@@ -24,7 +24,6 @@ class ApplyRaceTestCase(EvenniaTest):
         self.assertIn('wield1', self.char1.db.slots.keys())
         self.assertIn('r_arm', [l[0] for l in self.char1.db.limbs])
 
-@skip("refactor")
 class RaceTestCase(TestCase):
     """Test case for Race classes."""
     def test_load_human(self):
