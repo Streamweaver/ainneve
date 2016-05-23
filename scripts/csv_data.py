@@ -9,26 +9,24 @@ def parse_skills():
     :return: None
     """
     output = ""
-    with open('Skills.csv', 'r') as csvfile:
-        reader = csv.DictReader(csvfile, restval=None)
+    with open('Skills.csv', 'rb') as csvfile:
+        reader = csv.DictReader(csvfile)
         for row in reader:
-            try:
-                row["key"] = slugify(row["name"].lower())
+            if row:
                 output += """
-                "{}": {\n
-                    "name": {},\n
-                    "trait": {},\n
-                    "desc": {},\n
-                    "initial": {}\n
-                },\n
+                "{}": {{
+                    'name': "{}",
+                    "trait": "{}",
+                    "desc": "{}",
+                    "initial": {}
+                }},
                 """.format(
-                    row["key"],
+                    row["key"].lower(),
                     row["name"].title(),
                     row["trait"].upper(),
-                    row["initial"]
+                    row["desc"],
+                    row["initial"] or "None"
                 )
-            except KeyError:
-                print("*****", row, "*********")
     print(output)
 
 
