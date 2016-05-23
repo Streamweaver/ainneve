@@ -3,7 +3,30 @@ Prototype module containing weapons and shields.
 """
 
 from evennia.utils import fill
-from world.economy import SC, CC
+
+## Weapons from D6
+SURIVAL_KNIFE = {
+    "key": "a survival knife",
+    "aliases": ["knife", "survival knife"],
+    "typeclass": "typeclasses.weapons.Weapon",
+    "desc": "A well used blade of advanced polymers and cyramics, "
+            "it has a nano razor blade and a strudy handle.",
+    "weight": 1,
+    "value": 3,  # VE
+    "damage": 3, # ID
+}
+
+COLLASIBLE_STAFF = {
+    "key": "a collapsible staff",
+    "aliases": ["staff", "collapsible staff"],
+    "typeclass": "typeclasses.weapons.TwoHandedWeapon",
+    "desc": "A long sturdy staff made of compositie materials "
+            "with dark goorves at even intervals.  It can "
+            "retract and expand at will by the wielder.",
+    "weight": 4,
+    "value": 8, # E
+    "damage": 5, # 1D+2
+}
 
 ## Weapons from OA
 
@@ -14,7 +37,7 @@ HAND_AXE = {
     "desc": "The blade of this axe appears well-used and slightly "
             "tarnished, but its handle is straight and sturdy.",
     "weight": 1,
-    "value": 60*CC,
+    "value": 60,
     "damage": 2,
 }
 
@@ -25,7 +48,7 @@ BATTLE_AXE = {
     "desc": "Sturdy and with significant heft, this axe has a menacingly "
             "large blade, and a hard swing of it can send enemies flying. ",
     "weight": 3,
-    "value": 3*SC,
+    "value": 3,
     "damage": 4,
 }
 
@@ -36,7 +59,7 @@ DAGGER = {
     "desc": "This dagger is a sharp, threatening blade expertly mounted on "
             "a simple leather-wrapped metal hilt.",
     "weight": 0.5,
-    "value": 30*CC,
+    "value": 30,
     "damage": 1,
 }
 
@@ -47,7 +70,7 @@ MAUL_HAMMER = {
     "desc": "A heavy mass of metal mounted atop a sturdy staff, "
             "ready to deliver crushing blows to your enemies.",
     "weight": 5,
-    "value": 2*SC,
+    "value": 2,
     "damage": 4,
 }
 
@@ -58,7 +81,7 @@ LANCE_POLEARM = {
     "desc": "A sturdy wooden rod fitted with a menacing spike, this "
             "lance polearm threatens even enemies at a distance.",
     "weight": 4,
-    "value": 2*SC,
+    "value": 2,
     "damage": 4,
 }
 
@@ -69,7 +92,7 @@ PIKE_POLEARM = {
     "desc": "Requiring two hands to wield, this long spear was originally "
             "designed to unseat a rider on horseback.",
     "weight": 9,
-    "value": 50*CC,
+    "value": 50,
     "damage": 3,
 }
 
@@ -81,7 +104,7 @@ MAPLE_STAFF = {
             "staff, though it doesn't pack much of a punch. If only it "
             "could be enchanted...",
     "weight": 2,
-    "value": 2*CC,
+    "value": 2,
     "damage": 0,
 }
 
@@ -93,7 +116,7 @@ MACE_ROD = {
             "It's much lighter than it looks, but still heavy enough to do "
             "some damage.",
     "weight": 2,
-    "value": 50*CC,
+    "value": 50,
     "damage": 2,
 }
 
@@ -105,7 +128,7 @@ MORNINGSTAR_ROD = {
             "spiked metal orb. Its brutal appearance is sure to  "
             "intimidate.",
     "weight": 2,
-    "value": 1*SC,
+    "value": 1,
     "damage": 3,
 }
 
@@ -117,7 +140,7 @@ SCYTHE = {
             "curved blade of this tool can also be used to tear enemies "
             "apart.",
     "weight": 1,
-    "vaule": 1*SC,
+    "vaule": 1,
     "damage": 1,
 }
 
@@ -128,7 +151,7 @@ SHORT_SWORD = {
     "desc": "Blood stains and dirt smudge the iron blade of this "
             "short sword. Surely it has seen its share of battle.",
     "weight": 1,
-    "value": 1*SC,
+    "value": 1,
     "damage": 2,
 }
 
@@ -139,7 +162,7 @@ RAPIER = {
     "desc": "Mottled by age and oxidation, this rapier's blade has seen "
             "better days, but the hilt looks almost new.",
     "weight": 1,
-    "value": 3*SC,
+    "value": 3,
     "damage": 3,
 }
 
@@ -150,7 +173,7 @@ WHIP = {
     "desc": "Sixteen strands of leather, braided tightly in multiple "
             "layers. It extends the user's reach and can be used to disarm.",
     "weight": 1,
-    "value": 30*CC,
+    "value": 30,
     "damage": 1,
 }
 
@@ -166,7 +189,7 @@ LONG_BOW = {
             "firm and it will still accurately deliver an arrow to the heart "
             "of your enemies.",
     "weight": 1,
-    "value": 40*CC,
+    "value": 40,
     "damage": 1,
     "range": 16,
     "ammunition": "arrows",
@@ -179,7 +202,7 @@ HAND_CROSSBOW = {
     "desc": "This wooden crossbow is compact and powerful. Brazen "
             "adventurers may even choose to dual-wield them.  ",
     "weight": 2,
-    "value": 4*SC,
+    "value": 4,
     "damage": 0,
     "range": 8,
     "ammunition": "quarrels",
@@ -192,7 +215,7 @@ LIGHT_CROSSBOW = {
     "desc": "The laminated wooden recurve of this wooden crossbow fires "
             "quarrels with incredible force and accuracy. ",
     "weight": 3,
-    "value": 3*SC,
+    "value": 3,
     "damage": 1,
     "range": 11,
     "ammunition": "quarrels",
@@ -206,7 +229,7 @@ ARROW = {
     "typeclass": "typeclasses.items.Item",
     "desc": "Arrows crafted from reed wood and obsidian stone.",
     "weight": 1,
-    "value": 2*CC,
+    "value": 2,
 }
 
 QUARREL = {
@@ -215,7 +238,7 @@ QUARREL = {
     "typeclass": "typeclasses.items.Item",
     "desc": "A quarrel for use in a crossbow.",
     "weight": 0.5,
-    "value": 3*CC
+    "value": 3
 }
 
 ARROW_BUNDLE = {
@@ -224,7 +247,7 @@ ARROW_BUNDLE = {
     "typeclass": "typeclasses.items.Item",
     "desc": "A bundle of arrows held together with a thin leather strap.",
     "weight": 10,
-    "value": 25*CC,
+    "value": 25,
     "quantity": 10,
     "contents_proto": "ARROW",
 }
@@ -235,7 +258,7 @@ QUARREL_BUNDLE = {
     "typeclass": "typeclasses.items.Item",
     "desc": "A bundle of crossbow quarrels held together with a thin leather strap.",
     "weight": 5,
-    "value": 30*CC,
+    "value": 30,
     "quantity": 10,
     "contents_proto": "QUARREL",
 }
@@ -249,7 +272,7 @@ THROWING_AXE = {
     "desc": "This axe is light and sharp. It is balanced to spin fast "
             "and true when thrown.",
     "weight": 2,
-    "value": 80*CC,
+    "value": 80,
     "damage": 0,
     "range": 3,
 }
@@ -261,7 +284,7 @@ THROWING_DAGGER = {
     "desc": "This small, easily-concealed dagger flies straight and "
             "silently when thrown by a skilled assassin.",
     "weight": 1,
-    "value": 30*CC,
+    "value": 30,
     "damage": 0,
     "range": 2,
 }
@@ -273,7 +296,7 @@ JAVELIN = {
     "desc": "Long and light, the javelin has the longest range of thrown "
             "weapons.",
     "weight": 1,
-    "value": 15*CC,
+    "value": 15,
     "damage": 1,
     "range": 6,
 }
@@ -285,7 +308,7 @@ TRIDENT = {
     "desc": "The trident's triple-pointed metal spearhead is heavy and "
             "inflicts the most damage of the thrown weapons.",
     "weight": 2,
-    "value": 1*SC,
+    "value": 1,
     "damage": 2,
     "range": 2,
 }
