@@ -1,0 +1,44 @@
+name,trait,desc,initial
+dodge,AGL,Adds to the difficulty to hit you in personal combat.,0
+energy pistol,AGL,Use of laser or plasma pistols.,0
+energy rifle,AGL,Use of laser or plasma rifles and assualt rifles.,0
+pistol,AGL,Use of conventional pistols.,0
+rifle,AGL,Use of conventional rifles and assault rifles.,0
+shotgun,AGL,Use of shotguns.,0
+throwing,AGL,Accuracy when using grenades and other thrown weapons.,0
+astrography,KNW,Effectiveness at plotting jumps.,x
+bureaucracy,KNW,Effects docking fees and fines.,0
+business,KNW,Effects prices when trading goods.,x
+cultures,KNW,Examining cultural artifacts for value.,x
+intimidation,KNW,Reduce opponents effectiveness in combat or sometimes make them flee.,0
+languages,KNW,Decyphering ancient texts and artifacts.,x
+scholar,KNW,Analyzing sciendific samples for credits.,x
+streetwise,KNW,Uncover rumors and find the black market.,0
+survival,KNW,Reduce or avoid damage in harsh conditions on marginal worlds.,0
+gunnery,MCH,Use of ship mounted direct fire weapons.,0
+missile launchers,MCH,Use of ship mounted missile launchers.,x
+navigation,MCH,Effects fuel use and accuracy in plotting courses.,x
+powered armor,MCH,Use of powered armor and exoskeletons.,x
+sensors,MCH,Accuracy and effectiveness of ships sensors and cloaks.,x
+shields,MCH,Use of ships shields to resist damage.,x
+starship pilot,MCH,Flying starships to avoid damage and out menuver other starships.,x
+bargain,PER,Effects prices when buying and selling in stores.,0
+persuasion,PER,Chance of getting others to perform actions.,0
+search,PER,Success at noticing details or finding hidden items.,0
+stealth,PER,Chance to avoid detection or notice.,0
+armor,STR,Use of conventional armors.,0
+blunt weapons,STR,Use of blunt weapons of all kinds.,0
+hand to hand,STR,Use of unarmed combat.,0
+heavy weapons,STR,Use of personal missile launchers and crewed weapons.,x
+knives,STR,Use of knives and short blades.,0
+swords,STR,Use of swords and energized swords.,0
+armorer,TCH,Repairing or salvaging conventional armor.,x
+computers,TCH,Operating and hacking computers.,0
+demolitions,TCH,Usng or disarming explosives.,x
+gunnary tech,TCH,Repairing or salvaging ship mounted weapons.,x
+gunsmith,TCH,Repairing or salvaging firearms.,x
+medicine,TCH,Healing others and yourself.,0
+power armor tech,TCH,Repairing or salvaging power armor.,x
+robotics,TCH,Repairing or salvaing robotics and cybernetics. ,x
+security,TCH,Breaching electronic security systems and locks.,0
+starship engineering,TCH,Repairing or salvaging starships.,
