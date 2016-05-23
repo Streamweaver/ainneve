@@ -50,209 +50,309 @@ class SkillException(Exception):
         self.msg = msg
 
 
+# Produces from /scripts file prasing of my csv
 # global skill data is minimal, and can just be stored in a dict for now
 _SKILL_DATA = {
-    # AGILITY SKILLS
     "dodge": {
-        "name": "Dodge",
+        'name': "Dodge",
         "trait": "AGL",
-        "desc": "Skill at ducking and avoiding attacks."
+        "desc": "Adds to the difficulty to hit you in personal combat.",
+        "initial": 0
     },
-    "rifles": {
-        "name": "Rifles",
+
+    "energy_pistol": {
+        'name': "Energy Pistol",
         "trait": "AGL",
-        "desc": "Skill at shooting all kind of rifles."
+        "desc": "Use of laser or plasma pistols.",
+        "initial": 0
     },
-    "melee": {
-        "name": "Melee",
+
+    "energy_rifle": {
+        'name': "Energy Rifle",
         "trait": "AGL",
-        "desc": "Skill with melee weapons"
+        "desc": "Use of laser or plasma rifles and assualt rifles.",
+        "initial": 0
     },
-    "heavy weapons": {
-        "name": "Heavy Weapons",
+
+    "pistol": {
+        'name': "Pistol",
         "trait": "AGL",
-        "desc": "Skill at using missile launchers and crewed weapons."
+        "desc": "Use of conventional pistols.",
+        "initial": 0
     },
-    "sleight of hand": {
-        "name": "Sleight of Hand",
+
+    "rifle": {
+        'name': "Rifle",
         "trait": "AGL",
-        "desc": "Skill at picking pockets and physical misdirection."
+        "desc": "Use of conventional rifles and assault rifles.",
+        "initial": 0
     },
+
+    "shotgun": {
+        'name': "Shotgun",
+        "trait": "AGL",
+        "desc": "Use of shotguns.",
+        "initial": 0
+    },
+
     "throwing": {
-        "name": "Throwing",
+        'name': "Throwing",
         "trait": "AGL",
-        "desc": "Skill at throwing weapons and grenades."
+        "desc": "Accuracy when using grenades and other thrown weapons.",
+        "initial": 0
     },
-    # STRENGTH
-    "armor": {
-        "name": "Armor",
-        "trait": "STR",
-        "desc": "Skill at wearing non-powered armors."
-    },
-    "brawling": {
-        "name": "Brawling",
-        "trait": "STR",
-        "desc": "Skill in hand to hand combat."
-    },
-    # KNWLEGE SKILLS
+
     "astrography": {
-        "name": "Astrography",
+        'name': "Astrography",
         "trait": "KNW",
-        "desc": "Skill in stellar mapping and plotting jumps."
+        "desc": "Effectiveness at plotting jumps.",
+        "initial": None
     },
+
     "bureaucracy": {
-        "name": "Bureaucracy",
+        'name': "Bureaucracy",
         "trait": "KNW",
-        "desc": "Skill in manipulating or examining records, official requests."
+        "desc": "Effects docking fees and fines.",
+        "initial": 0
     },
+
     "business": {
-        "name": "Business",
+        'name': "Business",
         "trait": "KNW",
-        "desc": "Skill at trading, negotiating business deals and finding profit."
+        "desc": "Effects prices when trading goods.",
+        "initial": None
     },
+
     "cultures": {
-        "name": "Cultures",
+        'name': "Cultures",
         "trait": "KNW",
-        "desc": "Understanding of cultures and diplomacy to avoid conflict."
+        "desc": "Examining cultural artifacts for value.",
+        "initial": None
     },
+
     "intimidation": {
-        "name": "Intimidation",
+        'name': "Intimidation",
         "trait": "KNW",
-        "desc": "Skill at getting others to back down or force them to obey."
+        "desc": "Reduce opponents effectiveness in combat or sometimes make them flee.",
+        "initial": 0
     },
+
     "languages": {
-        "name": "Languages",
+        'name': "Languages",
         "trait": "KNW",
-        "desc": "Skill at understanding and deciphering languages"
+        "desc": "Decyphering ancient texts and artifacts.",
+        "initial": None
     },
+
     "scholar": {
-        "name": "Scholar",
+        'name': "Scholar",
         "trait": "KNW",
-        "desc": "Skill at examining artifacts or scientific samples."
+        "desc": "Analyzing sciendific samples for credits.",
+        "initial": None
     },
+
     "streetwise": {
-        "name": "Streetwise",
+        'name': "Streetwise",
         "trait": "KNW",
-        "desc": "Skill at underworld negotiations, uncovering rumors and finding the black market."
+        "desc": "Uncover rumors and find the black market.",
+        "initial": 0
     },
+
     "survival": {
-        "name": "Survival",
+        'name': "Survival",
         "trait": "KNW",
-        "desc": "Skill at enduring and avoiding damage in hostile environments."
+        "desc": "Reduce or avoid damage in harsh conditions on marginal worlds.",
+        "initial": 0
     },
-    # MCHANICAL SKILLS
-    "powered armor": {
-        "name": "Powered Armor",
-        "trait": "MCH",
-        "desc": "Skill at operating powered armor and exoskeletons."
-    },
+
     "gunnery": {
-        "name": "Gunnery",
+        'name': "Gunnery",
         "trait": "MCH",
-        "desc": "Skill operating vehicle mounted weapons."
+        "desc": "Use of ship mounted direct fire weapons.",
+        "initial": 0
     },
+
+    "missile_launchers": {
+        'name': "Missile Launchers",
+        "trait": "MCH",
+        "desc": "Use of ship mounted missile launchers.",
+        "initial": None
+    },
+
     "navigation": {
-        "name": "Navigation",
+        'name': "Navigation",
         "trait": "MCH",
-        "desc": "Skill at plotting courses."
+        "desc": "Effects fuel use and accuracy in plotting courses.",
+        "initial": None
     },
-    "piloting": {
-        "name":  "piloting",
+
+    "powered_armor": {
+        'name': "Powered Armor",
         "trait": "MCH",
-        "desc": "Skill at operating starships and atmospheric vehicles."
+        "desc": "Use of powered armor and exoskeletons.",
+        "initial": None
     },
-    "sensors":  {
-        "name": "Sensors",
+
+    "sensors": {
+        'name': "Sensors",
         "trait": "MCH",
-        "desc":  "Skill operating starship or vehicle sensors and cloaks."
+        "desc": "Accuracy and effectiveness of ships sensors and cloaks.",
+        "initial": None
     },
+
     "shields": {
-        "name": "Shields",
+        'name': "Shields",
         "trait": "MCH",
-        "desc": "Skill at operating shields."
+        "desc": "Use of ships shields to resist damage.",
+        "initial": None
     },
-    # PERCEPTION SKILLS
+
+    "starship_pilot": {
+        'name': "Starship Pilot",
+        "trait": "MCH",
+        "desc": "Flying starships to avoid damage and out menuver other starships.",
+        "initial": None
+    },
+
     "bargain": {
-        "name": "Bargain",
+        'name': "Bargain",
         "trait": "PER",
-        "desc": "Skill at negotiting prices when buying and selling."
+        "desc": "Effects prices when buying and selling in stores.",
+        "initial": 0
     },
-    "gambling": {
-        "name": "Gambling",
-        "trait": "PER",
-        "desc": "Skill at games of chance and high stakes games."
-    },
-    "stealth": {
-        "name": "Stealth",
-        "trait": "PER",
-        "desc": "Skill at hiding or moving while remaining undetected."
-    },
-    "investigation": {
-        "name":  "Investigation",
-        "trait": "PER",
-        "desc": "Skill at examining evidence to gain bonuses or information."
-    },
+
     "persuasion": {
-        "name": "Persuasion",
+        'name': "Persuasion",
         "trait": "PER",
-        "desc": "Skill at convincing others."
+        "desc": "Chance of getting others to perform actions.",
+        "initial": 0
     },
+
     "search": {
-        "name": "Search",
+        'name': "Search",
         "trait": "PER",
-        "desc": "Skill at examining areas for hidden items."
+        "desc": "Success at noticing details or finding hidden items.",
+        "initial": 0
     },
-    # TCHNICAL SKILLS
+
+    "stealth": {
+        'name': "Stealth",
+        "trait": "PER",
+        "desc": "Chance to avoid detection or notice.",
+        "initial": 0
+    },
+
+    "armor": {
+        'name': "Armor",
+        "trait": "STR",
+        "desc": "Use of conventional armors.",
+        "initial": 0
+    },
+
+    "blunt_weapons": {
+        'name': "Blunt Weapons",
+        "trait": "STR",
+        "desc": "Use of blunt weapons of all kinds.",
+        "initial": 0
+    },
+
+    "hand_to_hand": {
+        'name': "Hand To Hand",
+        "trait": "STR",
+        "desc": "Use of unarmed combat.",
+        "initial": 0
+    },
+
+    "heavy_weapons": {
+        'name': "Heavy Weapons",
+        "trait": "STR",
+        "desc": "Use of personal missile launchers and crewed weapons.",
+        "initial": None
+    },
+
+    "knives": {
+        'name': "Knives",
+        "trait": "STR",
+        "desc": "Use of knives and short blades.",
+        "initial": 0
+    },
+
+    "swords": {
+        'name': "Swords",
+        "trait": "STR",
+        "desc": "Use of swords and energized swords.",
+        "initial": 0
+    },
+
     "armorer": {
-        "name": "Armorer",
+        'name': "Armorer",
         "trait": "TCH",
-        "desc": "Skill at repairing, improving or salvaging armor."
+        "desc": "Repairing or salvaging conventional armor.",
+        "initial": None
     },
+
     "computers": {
-        "name": "Computers",
+        'name': "Computers",
         "trait": "TCH",
-        "desc": "Skill at operating, and hacking computers."
+        "desc": "Operating and hacking computers.",
+        "initial": 0
     },
+
     "demolitions": {
-        "name": "Demolitions",
+        'name': "Demolitions",
         "trait": "TCH",
-        "desc": "Skill setting or disarming explosives."
+        "desc": "Usng or disarming explosives.",
+        "initial": None
     },
-    "power armor tech": {
-        "name": "Power Armor tech",
+
+    "gunnary_tech": {
+        'name': "Gunnary Tech",
         "trait": "TCH",
-        "desc": "Skill at repairing, improving or salvaging power armor."
+        "desc": "Repairing or salvaging ship mounted weapons.",
+        "initial": None
     },
+
     "gunsmith": {
-        "name": "gunsmith",
+        'name': "Gunsmith",
         "trait": "TCH",
-        "desc": "Skill at repairing, improving or salvaging firearms."
+        "desc": "Repairing or salvaging firearms.",
+        "initial": None
     },
-    "starship engineering": {
-        "name": "Starship Engineering",
-        "trait": "TCH",
-        "desc": "Skill at repairing, improving or salvaging starships."
-    },
-    "gunnary tech": {
-        "name": "Gunnary tech",
-        "trait": "TCH",
-        "desc": "Skill at repairing, improving or salvaging vehicle mounted weapons."
-    },
+
     "medicine": {
-        "name": "Medicine",
+        'name': "Medicine",
         "trait": "TCH",
-        "desc": "Skill at healing and operating medical devices and scanners."
+        "desc": "Healing others and yourself.",
+        "initial": 0
     },
+
+    "power_armor_tech": {
+        'name': "Power Armor Tech",
+        "trait": "TCH",
+        "desc": "Repairing or salvaging power armor.",
+        "initial": None
+    },
+
     "robotics": {
-        "name": "Robotics",
+        'name': "Robotics",
         "trait": "TCH",
-        "desc": "Skill at repairing, improving or salvaing robotics and cybernetics. "
+        "desc": "Repairing or salvaing robotics and cybernetics. ",
+        "initial": None
     },
+
     "security": {
-        "name": "Security",
+        'name': "Security",
         "trait": "TCH",
-        "desc": "Skill at breaching security systems and locks."
-    }
+        "desc": "Breaching electronic security systems and locks.",
+        "initial": 0
+    },
+
+    "starship_engineering": {
+        'name': "Starship Engineering",
+        "trait": "TCH",
+        "desc": "Repairing or salvaging starships.",
+        "initial": None
+    },
 }
 
 # skill groupings used in skills command
