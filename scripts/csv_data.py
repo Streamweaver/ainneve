@@ -29,6 +29,50 @@ def parse_skills():
                 )
     print(output)
 
+def parse_weapons():
+    """
+    Parses weapon csv files into a python data dict string to past into python file
+    later.
+
+    :return: None
+
+    """
+    output = ""
+    with open('Weapons.csv', 'rb') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            aliases = ""
+            if row['aliases']:
+                aliases = ", ".join("'%s'" % a.strip() for a in row['aliases'].split(','))
+            output += """
+    {} = {{
+        'name': '{}',
+        'aliases': [{}],
+        'typeclass': '{}',
+        'desc': '{}',
+        'weight': {},
+        'value': {},
+        'damage': {},
+        'ware': {},
+        'bonus': {},
+        'use_skill': '{}',
+        'fix_skill': '{}',
+            }}
+            """.format(
+                row['key'].upper(),
+                row['name'].title(),
+                aliases,
+                row['typeclass'],
+                row['desc'],
+                row['weight'],
+                row['value'],
+                row['damage'],
+                row['ware'],
+                row['bonus'],
+                row['use_skill'],
+                row['fix_skill']
+            )
+        print(output)
 
 if __name__ == "__main__":
-    parse_skills()
+    parse_weapons()

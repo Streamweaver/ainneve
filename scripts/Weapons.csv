@@ -1,0 +1,15 @@
+name,aliases,typeclass,desc,weight,value,damage,ware,bonus,use_skill,fix_skill,key
+shotgun,,typeclasses.weapons.TwoHandedRanged,shotgun,1,8,16,0,0,shotgun,gunsmith,shotgun
+pistol,,typeclasses.weapons.RangedWeapon,Hand held pistol.,1,7,11,0,0,pistol,gunsmith,pistol
+rifle,,typeclasses.weapons.TwoHandedRanged,Long conventional rifel.,1,9,16,0,0,rifle,gunsmith,rifle
+laser rifle,,typeclasses.weapons.TwoHandedRanged,Fires a focuse energy beam.,1,15,14,0,0,energy rifle,gunsmith,laser_rifle
+plasma rifle,,typeclasses.weapons.TwoHandedRanged,Fires contained blasts of plasma.,1,18,21,0,0,energy rifle,gunsmith,plasma_rifle
+laser pistol,,typeclasses.weapons.RangedWeapon,Hand held pistol that fires focused beam of energy.,1,14,12,0,0,energy pistol,gunsmith,laser_pistol
+plasma pistol,,typeclasses.weapons.RangedWeapon,Hand held pistol that fires a contained blast of plasma.,1,15,15,0,0,energy pistol,gunsmith,plasma_pistol
+survival knife,knife,typeclasses.weapons.Weapon,Composite carbon blade with a mono-thin edge.,1,3,3,0,0,knives,gunsmith,survival_knife
+monosword,,typeclasses.weapons.Weapon,Light composite carbon blade about half a meter long.,1,8,9,0,0,sword,gunsmith,monosword
+energy baton,,typeclasses.weapons.Weapon,Baton that releases a shock on impact.,1,6,5,0,0,blunt weapons,gunsmith,energy_baton
+collapsible staff,staff,typeclasses.weapons.TwoHandedWeapon,Dark carbon staff that seems smooth but can collapse and expand on command.,1,7,6,0,0,blunt weapons,gunsmith,collapsible_staff
+vibrosword,,typeclasses.weapons.Weapon,Monosword that increases cutting power through microvibrations.,1,18,12,0,0,swords,gunsmith,vibrosword
+submachine gun,smg,typeclasses.weapons.RangedWeapon,Large autopistol.,1,10,14,0,0,pistol,gunsmith,submachine_gun
+assault rifle,,typeclasses.weapons.TwoHandedRanged,Multi-modal combat rifle.,1,18,18,0,0,rifle,rifle,assault_rifle
