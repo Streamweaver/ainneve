@@ -5,15 +5,15 @@ from typeclasses.characters import Character
 from typeclasses.weapons import Weapon, TwoHandedWeapon
 from world import equip
 from world import races
-from world.content.prototypes_weapons import SURIVAL_KNIFE, COLLASIBLE_STAFF
+from world.content.prototypes_weapons import SURVIVAL_KNIFE, COLLAPSIBLE_STAFF
 
 class EquipHandlerTestCase(EvenniaTest):
     character_typeclass = Character
 
     def setUp(self):
         super(EquipHandlerTestCase, self).setUp()
-        self.staff = spawn(COLLASIBLE_STAFF).pop()
-        self.knife = spawn(SURIVAL_KNIFE).pop()
+        self.staff = spawn(COLLAPSIBLE_STAFF).pop()
+        self.knife = spawn(SURVIVAL_KNIFE).pop()
         races.apply_race(self.char1, races.Human())
 
     def test_init(self):

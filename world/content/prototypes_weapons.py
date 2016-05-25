@@ -2,313 +2,215 @@
 Prototype module containing weapons and shields.
 """
 
-from evennia.utils import fill
+# from evennia.utils import fill
 
 ## Weapons from D6
-SURIVAL_KNIFE = {
-    "key": "a survival knife",
-    "aliases": ["knife", "survival knife"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "A well used blade of advanced polymers and cyramics, "
-            "it has a nano razor blade and a strudy handle.",
-    "weight": 1,
-    "value": 3,  # VE
-    "damage": 3, # ID
-}
+SG16_SHOTGUN = {
+    'name': 'SG16 Shotgun',
+    'aliases': ['sg16'],
+    'typeclass': 'typeclasses.weapons.TwoHandedRanged',
+    'desc': 'shotgun',
+    'weight': 1,
+    'value': 8,
+    'damage': 16,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'shotgun',
+    'fix_skill': 'gunsmith',
+        }
 
-COLLASIBLE_STAFF = {
-    "key": "a collapsible staff",
-    "aliases": ["staff", "collapsible staff"],
-    "typeclass": "typeclasses.weapons.TwoHandedWeapon",
-    "desc": "A long sturdy staff made of compositie materials "
-            "with dark goorves at even intervals.  It can "
-            "retract and expand at will by the wielder.",
-    "weight": 4,
-    "value": 8, # E
-    "damage": 5, # 1D+2
-}
+P11_PISTOL = {
+    'name': 'P11 Pistol',
+    'aliases': ['p11'],
+    'typeclass': 'typeclasses.weapons.RangedWeapon',
+    'desc': 'Hand held pistol.',
+    'weight': 1,
+    'value': 7,
+    'damage': 11,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'pistol',
+    'fix_skill': 'gunsmith',
+        }
 
-## Weapons from OA
+R16_RIFLE = {
+    'name': 'R16 Rifle',
+    'aliases': ['r16'],
+    'typeclass': 'typeclasses.weapons.TwoHandedRanged',
+    'desc': 'Long conventional rifel.',
+    'weight': 1,
+    'value': 9,
+    'damage': 16,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'rifle',
+    'fix_skill': 'gunsmith',
+        }
 
-HAND_AXE = {
-    "key": "a hand axe",
-    "aliases": ["hand axe", "axe"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "The blade of this axe appears well-used and slightly "
-            "tarnished, but its handle is straight and sturdy.",
-    "weight": 1,
-    "value": 60,
-    "damage": 2,
-}
+LR14_LASER_RIFLE = {
+    'name': 'LR14 Laser Rifle',
+    'aliases': ['lr14'],
+    'typeclass': 'typeclasses.weapons.TwoHandedRanged',
+    'desc': 'Fires a focuse energy beam.',
+    'weight': 1,
+    'value': 15,
+    'damage': 14,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'energy_rifle',
+    'fix_skill': 'gunsmith',
+        }
 
-BATTLE_AXE = {
-    "key": "a battle axe",
-    "aliases": ["battle axe", "axe"],
-    "typeclass": "typeclasses.weapons.TwoHandedWeapon",
-    "desc": "Sturdy and with significant heft, this axe has a menacingly "
-            "large blade, and a hard swing of it can send enemies flying. ",
-    "weight": 3,
-    "value": 3,
-    "damage": 4,
-}
+PR21_PLASMA_RIFLE = {
+    'name': 'PR21 Plasma Rifle',
+    'aliases': ['pr21'],
+    'typeclass': 'typeclasses.weapons.TwoHandedRanged',
+    'desc': 'Fires contained blasts of plasma.',
+    'weight': 1,
+    'value': 18,
+    'damage': 21,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'energy_pistol',
+    'fix_skill': 'gunsmith',
+        }
 
-DAGGER = {
-    "key": "a dagger",
-    "aliases": ["dagger"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "This dagger is a sharp, threatening blade expertly mounted on "
-            "a simple leather-wrapped metal hilt.",
-    "weight": 0.5,
-    "value": 30,
-    "damage": 1,
-}
+LP12_LASER_PISTOL = {
+    'name': 'LP12 Laser Pistol',
+    'aliases': ['lp12'],
+    'typeclass': 'typeclasses.weapons.RangedWeapon',
+    'desc': 'Hand held pistol that fires focused beam of energy.',
+    'weight': 1,
+    'value': 14,
+    'damage': 12,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'energy_pistol',
+    'fix_skill': 'gunsmith',
+        }
 
-MAUL_HAMMER = {
-    "key": "a maul hammer",
-    "aliases": ["maul hammer", "maul", "hammer"],
-    "typeclass": "typeclasses.weapons.TwoHandedWeapon",
-    "desc": "A heavy mass of metal mounted atop a sturdy staff, "
-            "ready to deliver crushing blows to your enemies.",
-    "weight": 5,
-    "value": 2,
-    "damage": 4,
-}
+PP15_PLASMA_PISTOL = {
+    'name': 'PP15 Plasma Pistol',
+    'aliases': ['pp15'],
+    'typeclass': 'typeclasses.weapons.RangedWeapon',
+    'desc': 'Hand held pistol that fires a contained blast of plasma.',
+    'weight': 1,
+    'value': 15,
+    'damage': 15,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'energy_pistol',
+    'fix_skill': 'gunsmith',
+        }
 
-LANCE_POLEARM = {
-    "key": "a lance polearm",
-    "aliases": ["lance polearm", "lance", "polearm"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "A sturdy wooden rod fitted with a menacing spike, this "
-            "lance polearm threatens even enemies at a distance.",
-    "weight": 4,
-    "value": 2,
-    "damage": 4,
-}
+SURVIVAL_KNIFE = {
+    'name': 'survival knife',
+    'aliases': ['knife'],
+    'typeclass': 'typeclasses.weapons.Weapon',
+    'desc': 'Composite carbon blade with a mono-thin edge.',
+    'weight': 1,
+    'value': 3,
+    'damage': 3,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'knives',
+    'fix_skill': 'gunsmith',
+        }
 
-PIKE_POLEARM = {
-    "key": "a pike polearm",
-    "aliases": ["pike polearm", "pike", "polearm"],
-    "typeclass": "typeclasses.weapons.TwoHandedWeapon",
-    "desc": "Requiring two hands to wield, this long spear was originally "
-            "designed to unseat a rider on horseback.",
-    "weight": 9,
-    "value": 50,
-    "damage": 3,
-}
+MONOSWORD = {
+    'name': 'monosword',
+    'aliases': [],
+    'typeclass': 'typeclasses.weapons.Weapon',
+    'desc': 'Light composite carbon blade about half a meter long.',
+    'weight': 1,
+    'value': 8,
+    'damage': 9,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'swords',
+    'fix_skill': 'gunsmith',
+        }
 
-MAPLE_STAFF = {
-    "key": "a quarterstaff",
-    "aliases": ["quarterstaff", "staff"],
-    "typeclass": "typeclasses.weapons.TwoHandedWeapon",
-    "desc": "Enemies at a distance should be wary of this stout wooden "
-            "staff, though it doesn't pack much of a punch. If only it "
-            "could be enchanted...",
-    "weight": 2,
-    "value": 2,
-    "damage": 0,
-}
+ENERGY_BATON = {
+    'name': 'energy baton',
+    'aliases': [],
+    'typeclass': 'typeclasses.weapons.Weapon',
+    'desc': 'Baton that releases a shock on impact.',
+    'weight': 1,
+    'value': 6,
+    'damage': 5,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'blunt_weapons',
+    'fix_skill': 'gunsmith',
+        }
 
-MACE_ROD = {
-    "key": "a mace",
-    "aliases": ["mace", "rod"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "This mace features a crown-shaped head and a slender handle. "
-            "It's much lighter than it looks, but still heavy enough to do "
-            "some damage.",
-    "weight": 2,
-    "value": 50,
-    "damage": 2,
-}
+COLLAPSIBLE_STAFF = {
+    'name': 'collapsible staff',
+    'aliases': ['staff'],
+    'typeclass': 'typeclasses.weapons.TwoHandedWeapon',
+    'desc': 'Dark carbon staff that seems smooth but can collapse and expand on command.',
+    'weight': 1,
+    'value': 7,
+    'damage': 6,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'blunt_weapons',
+    'fix_skill': 'gunsmith',
+        }
 
-MORNINGSTAR_ROD = {
-    "key": "a morningstar",
-    "aliases": ["morningstar", "rod"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "This mace's leather-wrappend handle extends up to a large, "
-            "spiked metal orb. Its brutal appearance is sure to  "
-            "intimidate.",
-    "weight": 2,
-    "value": 1,
-    "damage": 3,
-}
+VIBROSWORD = {
+    'name': 'vibrosword',
+    'aliases': [],
+    'typeclass': 'typeclasses.weapons.Weapon',
+    'desc': 'Monosword that increases cutting power through microvibrations.',
+    'weight': 1,
+    'value': 18,
+    'damage': 12,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'swords',
+    'fix_skill': 'gunsmith',
+        }
 
-SCYTHE = {
-    "key": "a scythe",
-    "aliases": ["scythe"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "Most often used by farm workers to harvest crops, the "
-            "curved blade of this tool can also be used to tear enemies "
-            "apart.",
-    "weight": 1,
-    "vaule": 1,
-    "damage": 1,
-}
+SMG14_SUBMACHINE_GUN = {
+    'name': 'SMG14 Submachine Gun',
+    'aliases': ['smg', 'smg14'],
+    'typeclass': 'typeclasses.weapons.RangedWeapon',
+    'desc': 'Large autopistol.',
+    'weight': 1,
+    'value': 10,
+    'damage': 14,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'pistol',
+    'fix_skill': 'gunsmith',
+        }
 
-SHORT_SWORD = {
-    "key": "a short sword",
-    "aliases": ["short sword", "sword"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "Blood stains and dirt smudge the iron blade of this "
-            "short sword. Surely it has seen its share of battle.",
-    "weight": 1,
-    "value": 1,
-    "damage": 2,
-}
-
-RAPIER = {
-    "key": "a rapier",
-    "aliases": ["rapier"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "Mottled by age and oxidation, this rapier's blade has seen "
-            "better days, but the hilt looks almost new.",
-    "weight": 1,
-    "value": 3,
-    "damage": 3,
-}
-
-WHIP = {
-    "key": "a whip",
-    "aliases": ["whip"],
-    "typeclass": "typeclasses.weapons.Weapon",
-    "desc": "Sixteen strands of leather, braided tightly in multiple "
-            "layers. It extends the user's reach and can be used to disarm.",
-    "weight": 1,
-    "value": 30,
-    "damage": 1,
-}
-
-
-# Ranged Weapons
-
-
-LONG_BOW = {
-    "key": "a long bow",
-    "aliases": ["long bow", "bow"],
-    "typeclass": "typeclasses.weapons.TwoHandedRanged",
-    "desc": "This bow has a rich patina from years of use, but its draw is "
-            "firm and it will still accurately deliver an arrow to the heart "
-            "of your enemies.",
-    "weight": 1,
-    "value": 40,
-    "damage": 1,
-    "range": 16,
-    "ammunition": "arrows",
-}
-
-HAND_CROSSBOW = {
-    "key": "a hand crossbow",
-    "aliases": ["hand crossbow", "crossbow", "hand"],
-    "typeclass": "typeclasses.weapons.RangedWeapon",
-    "desc": "This wooden crossbow is compact and powerful. Brazen "
-            "adventurers may even choose to dual-wield them.  ",
-    "weight": 2,
-    "value": 4,
-    "damage": 0,
-    "range": 8,
-    "ammunition": "quarrels",
-}
-
-LIGHT_CROSSBOW = {
-    "key": "a light crossbow",
-    "aliases": ["light crossbow", "crossbow", "light"],
-    "typeclass": "typeclasses.weapons.TwoHandedRanged",
-    "desc": "The laminated wooden recurve of this wooden crossbow fires "
-            "quarrels with incredible force and accuracy. ",
-    "weight": 3,
-    "value": 3,
-    "damage": 1,
-    "range": 11,
-    "ammunition": "quarrels",
-}
-
-# Ammunition
-
-ARROW = {
-    "key": "an obsidian-tipped arrow",
-    "aliases": ["arrow"],
-    "typeclass": "typeclasses.items.Item",
-    "desc": "Arrows crafted from reed wood and obsidian stone.",
-    "weight": 1,
-    "value": 2,
-}
-
-QUARREL = {
-    "key": "a crossbow quarrel",
-    "aliases": ["quarrel", "qua"],
-    "typeclass": "typeclasses.items.Item",
-    "desc": "A quarrel for use in a crossbow.",
-    "weight": 0.5,
-    "value": 3
-}
-
-ARROW_BUNDLE = {
-    "key": "a bundle of arrows",
-    "aliases": ["bundle of arrows", "bundle arrows", "arrows"],
-    "typeclass": "typeclasses.items.Item",
-    "desc": "A bundle of arrows held together with a thin leather strap.",
-    "weight": 10,
-    "value": 25,
-    "quantity": 10,
-    "contents_proto": "ARROW",
-}
-
-QUARREL_BUNDLE = {
-    "key": "a bundle of quarrels",
-    "aliases": ["bundle of quarrels", "bundle quarrels", "quarrels"],
-    "typeclass": "typeclasses.items.Item",
-    "desc": "A bundle of crossbow quarrels held together with a thin leather strap.",
-    "weight": 5,
-    "value": 30,
-    "quantity": 10,
-    "contents_proto": "QUARREL",
-}
-
-# Thrown Ranged
-
-THROWING_AXE = {
-    "key": "a throwing axe",
-    "aliases": ["throwing axe", "th axe", "thr axe", "axe"],
-    "typeclass": "typeclasses.weapons.RangedWeapon",
-    "desc": "This axe is light and sharp. It is balanced to spin fast "
-            "and true when thrown.",
-    "weight": 2,
-    "value": 80,
-    "damage": 0,
-    "range": 3,
-}
-
-THROWING_DAGGER = {
-    "key": "a throwing dagger",
-    "aliases": ["throwing dagger", "th dagger", "thr dagger" "dagger"],
-    "typeclass": "typeclasses.weapons.RangedWeapon",
-    "desc": "This small, easily-concealed dagger flies straight and "
-            "silently when thrown by a skilled assassin.",
-    "weight": 1,
-    "value": 30,
-    "damage": 0,
-    "range": 2,
-}
-
-JAVELIN = {
-    "key": "a javelin",
-    "aliases": ["javelin"],
-    "typeclass": "typeclasses.weapons.RangedWeapon",
-    "desc": "Long and light, the javelin has the longest range of thrown "
-            "weapons.",
-    "weight": 1,
-    "value": 15,
-    "damage": 1,
-    "range": 6,
-}
-
-TRIDENT = {
-    "key": "a trident",
-    "aliases": ["trident"],
-    "typeclass": "typeclasses.weapons.RangedWeapon",
-    "desc": "The trident's triple-pointed metal spearhead is heavy and "
-            "inflicts the most damage of the thrown weapons.",
-    "weight": 2,
-    "value": 1,
-    "damage": 2,
-    "range": 2,
-}
+AR18_ASSAULT_RIFLE = {
+    'name': 'AR18 Assault Rifle',
+    'aliases': ['ar18'],
+    'typeclass': 'typeclasses.weapons.TwoHandedRanged',
+    'desc': 'Multi-modal combat rifle.',
+    'weight': 1,
+    'value': 18,
+    'damage': 18,
+    'wear': 0,
+    'durability': 5,
+    'bonus': 0,
+    'use_skill': 'rifle',
+    'fix_skill': 'gunsmith',
+        }

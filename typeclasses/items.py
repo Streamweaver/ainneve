@@ -47,6 +47,11 @@ class Equippable(Item):
     """
     slots = None
     multi_slot = False
+    wear = None
+    durability  = None
+    bonus = None
+    use_skill = None
+    fix_skill = None
 
     def at_object_creation(self):
         super(Equippable, self).at_object_creation()
@@ -54,6 +59,10 @@ class Equippable(Item):
         self.db.slots = self.slots
         self.db.multi_slot = self.multi_slot
         self.db.used_by = None
+        self.db.wear = self.wear
+        self.db.durability = self.durability
+        self.db.use_skill = self.use_skill
+        self.db.fix_skill = self.fix_skill
 
     def at_equip(self, character):
         """
@@ -78,3 +87,10 @@ class Equippable(Item):
         if self in dropper.equip:
             dropper.equip.remove(self)
             self.at_remove(dropper)
+
+# class Degradable:
+#     """
+#     Mixin's class for degradeable items.
+#     """
+#     self.db.wear = 0 # starts out pristine
+#     self.db.bodypoints = 0
